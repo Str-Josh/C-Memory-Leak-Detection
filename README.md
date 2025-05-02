@@ -16,7 +16,7 @@ The project creates malloc and free functions, which are wrapped using linker su
 2. Change git remote url to avoid accidental pushes to main project
 <br>`git remote set-url origin github_username/repo_name`
 <br>`git remote -v`
-3. Compile the following scripts:<br>
+3. Compile the following scripts:
 <br>`gcc -c LinkedList.c`
 <br>`gcc -c MemoryLeakDetector.c`
 <br>`gcc -c main.c` (Optional)
@@ -38,6 +38,5 @@ Future Additions/Improvements:
 * Todo: Implementation for realloc and calloc
 * Add more analytics regarding memory allocations/deallocations
 * Implement file path and line number tracking for each allocation and deallocation
-* 
 * Create a GUI using Qt so that there can be a dashboard for non-technical users
 
