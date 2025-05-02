@@ -1,8 +1,16 @@
 #include "LinkedList.h"
 
 
+void* __real___real_malloc(size_t size);
+void* __real_calloc(size_t num, size_t size);
+void* __real_realloc(void* ptr, size_t new_size);
+void  __real_free(void* ptr);
+
 struct Node* createNewNode(void* memoryAddress, size_t allocatedMemorySize, const char* filename, int lineLocation) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (memoryAddress == NULL) { return NULL; }
+    if (filename == NULL) { return NULL; }
+
+    struct Node* newNode = (struct Node*)__real_malloc(sizeof(struct Node));
     newNode->memoryAddress = memoryAddress;
     newNode->allocatedMemorySize = allocatedMemorySize;
     newNode->fileName = (char*)filename;
@@ -12,12 +20,20 @@ struct Node* createNewNode(void* memoryAddress, size_t allocatedMemorySize, cons
 }
 
 void insertFront(struct Node* head, void* memoryAddress, size_t allocatedMemorySize, const char* filename, int lineLocation) {
+    if (head == NULL) { return; }
+    if (memoryAddress == NULL) { return; }
+    if (filename == NULL) { return; }
+
     struct Node* newNode = createNewNode(memoryAddress, allocatedMemorySize, filename, lineLocation);
     newNode->next = head;
     head = newNode;
 }
 
 void insertBack(struct Node* head, void* memoryAddress, size_t allocatedMemorySize, const char* filename, int lineLocation) {
+    if (head == NULL) { return; }
+    if (memoryAddress == NULL) { return; }
+    if (filename == NULL) { return; }
+
     struct Node* newNode = createNewNode(memoryAddress, allocatedMemorySize, filename, lineLocation);
     if (head == NULL) {
         head = newNode;
@@ -34,25 +50,29 @@ void deleteFront(struct Node* head) {
     if (head == NULL) { printf("The list is empty.\n"); return; }
     struct Node* temp = head;
     head = temp->next;
-    free(temp);
+    __real_free(temp);
 }
 
 void deleteBack(struct Node* head, int position) {
     if (head == NULL) { printf("The list is empty.\n"); return; }
     struct Node* temp = head;
     if (temp->next == NULL) {
-        free(temp);
+        __real_free(temp);
         head = NULL;
         return;
     }
     while (temp->next->next != NULL) {
         temp = temp->next;
     }
-    free(temp->next);
+    __real_free(temp->next);
     temp->next = NULL;
 }
 
 void deleteAt(struct Node** head, void* memoryAddressComparer) {
+    if (head == NULL) { return; }
+    if (*head == NULL) { return; }
+    if (memoryAddressComparer == NULL) { return; }
+    
     struct Node* temp = *head;
     struct Node* prev = NULL;
 
@@ -64,7 +84,7 @@ void deleteAt(struct Node** head, void* memoryAddressComparer) {
             else {
                 prev->next = temp->next;
             }
-            free(temp);
+            __real_free(temp);
             return;
         }
         prev = temp;
@@ -95,6 +115,8 @@ void displayContents(struct Node* head) {
 }
 
 int count(struct Node* head) {
+    if (head == NULL) { return 0; }
+
     int count = 0;
     struct Node* current = head;
     while (current != NULL) {
@@ -104,10 +126,12 @@ int count(struct Node* head) {
     return count;
 }
 
-void reverseOrder(struct Node* head) {  }
+void reverseOrder(struct Node* head) { return; }
 
 struct Node* search(struct Node* head, void* memoryAddress) {
     if (head == NULL) { printf("Linked List is empty.\n"); return NULL; }
+    if (memoryAddress == NULL) { return NULL; }
+
     if (head->memoryAddress == memoryAddress) {
         /// printf("First element was found.\n");
         return head;

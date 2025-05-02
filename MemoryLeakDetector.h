@@ -1,8 +1,13 @@
 #ifndef MEMORY_LEAK_DETECTOR_H
 #define MEMORY_LEAK_DETECTOR_H
 
-#include <stdlib.h>
 #include "LinkedList.h"
+
+
+void* __real_malloc(size_t size);
+void* __real_calloc(size_t num, size_t size);
+void* __real_realloc(void* ptr, size_t new_size);
+void  __real_free(void* ptr);
 
 struct heapUsageStruct {
     int allocs;
@@ -11,14 +16,14 @@ struct heapUsageStruct {
     size_t totalBytesFreed;
 };
 
-void* malloc_leakDetect(size_t size);
+void* __wrap_malloc(size_t size);
 
-void* calloc_leakDetect(size_t num, size_t size);
+void* __wrap_calloc(size_t num, size_t size);
 
-void* realloc_leakDetect(void* ptr, size_t new_size);
+void* __wrap_realloc(void* ptr, size_t new_size);
 
-void free_leakDetect(void* allocatedMemory);
+void __wrap_free(void* allocatedMemory);
 
-void displayLeakDetectionReport();
+static void displayLeakDetectionReport();
 
 #endif

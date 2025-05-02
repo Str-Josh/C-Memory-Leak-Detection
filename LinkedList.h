@@ -5,6 +5,11 @@
 #include <stdio.h>
 #include <string.h>
 
+void* __real_malloc(size_t size);
+void* __real_calloc(size_t num, size_t size);
+void* __real_realloc(void* ptr, size_t new_size);
+void  __real_free(void* ptr);
+
 struct Node {
     struct Node* next;
 

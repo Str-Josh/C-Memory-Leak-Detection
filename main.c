@@ -2,30 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "MemoryLeakDetector.h"
-
 
 int main() {
-    int* exampleIntArray = (int*)malloc_leakDetect(5*sizeof(int));  // Allocating memory
-    
-    // Note: Freeing the allocated memory using the below wrapper for 'free', result will show no memory leaks.
-    // free_leakDetect(exampleIntArray);
+    int* exampleIntArray = (int*)malloc(5*sizeof(int));  // Allocating memory
 
-    printf("\n\n");
-    displayLeakDetectionReport();
-    printf("\n\n");
+    // Note: Freeing the allocated memory will result show no memory leaks.
+    // free(exampleIntArray);
 
     /* Note: 
     *  Uncommenting the following will add another memory leak.
-    *  You'll see the addition in the displayLeakDetectionreport().
+    *  The addition in the after program execution.
     */
 
-    // int* someStorage = (int*)malloc_leakDetect(5*sizeof(int));
+    // int* someStorage = (int*)malloc(5*sizeof(int));
     // someStorage[0] = 2;
     // someStorage[2] = 3;
     // someStorage[4] = 1;
-
-    // displayLeakDetectionReport();
 
     printf("Program executed successfully.");
     return 1;
