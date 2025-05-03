@@ -6,7 +6,7 @@
 int main() {
     // int* exampleIntArray = (int*)malloc(5*sizeof(int));  // Allocating memory
 
-    // Note: Freeing the allocated memory will result show no memory leaks.
+    // Note: Freeing the allocated memory will show no memory leaks.
     // free(exampleIntArray);
 
     /* Note: 
