@@ -15,6 +15,7 @@ struct heapUsageStruct heapUsage;
 void* __wrap_malloc(size_t size) {
     void* allocatedStorage = __real_malloc(size);
     if (linkedListHead == NULL) {
+        // create a new Linked List and initialize heapUsage member variables.
         linkedListHead = createNewNode(allocatedStorage, size, __FILE__, __LINE__);
         heapUsage.allocs = 1;
         heapUsage.deallocs = 0;
@@ -29,12 +30,31 @@ void* __wrap_malloc(size_t size) {
     return allocatedStorage;
 }
 
-void* __wrap_calloc(size_t num, size_t size) { return NULL; }
+void* __wrap_calloc(size_t num, size_t size) {
+    void* allocatedStorage = __real_calloc(num, size);
+    if (!allocatedStorage) { printf("Calloc Failed"); return NULL; }
+    if (linkedListHead == NULL) {
+        linkedListHead = createNewNode(allocatedStorage, num * size, __FILE__, __LINE__);
+        heapUsage.allocs = 1;
+        heapUsage.deallocs = 0;
+        heapUsage.totalBytesAlloc = size;
+        heapUsage.totalBytesFreed = 0;
+    }
+    else {
+        insertBack(linkedListHead, allocatedStorage, num * size, __FILE__, __LINE__);
+        heapUsage.allocs += 1;  // only increments the function calls not the number of blocks allocated.
+        heapUsage.totalBytesAlloc += num * size;
+    }
+    return allocatedStorage;
+}
 
 void* __wrap_realloc(void* ptr, size_t new_size) {
     if (ptr == NULL) { return __wrap_malloc(new_size); }
     if (new_size == 0) { __wrap_free(ptr); return NULL; }
-    return NULL;
+    void* newMemoryBlock = __real_realloc(ptr, new_size);
+    __wrap_free(ptr);
+    __wrap_malloc(sizeof(newMemoryBlock));
+    return newMemoryBlock;
 }
 
 void __wrap_free(void* allocatedMemory) {
@@ -59,7 +79,7 @@ static void displayLeakDetectionReport() {
     int totalMemoryLeaks = heapUsage.allocs - heapUsage.deallocs;
     int totalMemoryLeakSize = heapUsage.totalBytesAlloc - heapUsage.totalBytesFreed;
     if (!totalMemoryLeaks) {
-        printf("There weren't any memory leaks detected!");
+        printf("No leaked blocks found!\n");
         return;
     }
     printf("Total memory leaks found:  %d\n================================\n", totalMemoryLeaks);
@@ -82,9 +102,6 @@ static void displayLeakDetectionReport() {
         /* Don't convert to anything different. */
         sizeInterpretation = possibleSizeInterpretations[2];
     }
-    if (sizeInterpretation == NULL) {
-        printf("Apparently sizeInterpretation is null for some reason.\n");
-        return;
-    }
+    if (sizeInterpretation == NULL) { return; }
     printf("Total memory leaked:  %f %s\n", totalMemoryLeakSize_converted, sizeInterpretation);
 }

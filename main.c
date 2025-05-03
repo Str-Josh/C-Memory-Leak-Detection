@@ -4,7 +4,7 @@
 
 
 int main() {
-    int* exampleIntArray = (int*)malloc(5*sizeof(int));  // Allocating memory
+    // int* exampleIntArray = (int*)malloc(5*sizeof(int));  // Allocating memory
 
     // Note: Freeing the allocated memory will result show no memory leaks.
     // free(exampleIntArray);
@@ -19,6 +19,5 @@ int main() {
     // someStorage[2] = 3;
     // someStorage[4] = 1;
 
-    printf("Program executed successfully.");
     return 1;
 }
