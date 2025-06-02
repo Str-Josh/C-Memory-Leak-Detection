@@ -9,7 +9,7 @@ The project creates malloc and free functions, which are wrapped using linker su
 
 ## Getting Started
 ### Prerequisites
-* C Compiler (Clang, GCC, etc.) This project utilized the GNU Compiler Collection.
+* C Compiler (Clang, GCC, etc.) Examples are using GCC.
 
 ### Installation
 1. Clone the repo: <br> `git clone https://github.com/Str-Josh/C-Memory-Leak-Detection.git`
@@ -35,8 +35,6 @@ Lessons Learned:
 
 
 Future Additions/Improvements:
-* Todo: Implementation for realloc and calloc
 * Add more analytics regarding memory allocations/deallocations
 * Implement file path and line number tracking for each allocation and deallocation
-* Create a GUI using Qt so that there can be a dashboard for non-technical users
 
