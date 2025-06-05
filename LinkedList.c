@@ -1,7 +1,7 @@
 #include "LinkedList.h"
 
 
-void* __real___real_malloc(size_t size);
+void* __real_malloc(size_t size);
 void* __real_calloc(size_t num, size_t size);
 void* __real_realloc(void* ptr, size_t new_size);
 void  __real_free(void* ptr);
